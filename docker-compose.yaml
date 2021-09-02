@@ -1,0 +1,43 @@
+services:
+  redis:
+    container_name: redis
+    image: redis:6.2.5
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: [ "CMD","redis-cli","ping" ]
+    restart: always
+    volumes:
+      - redis_data:/data
+    networks:
+      - status
+
+  rabbitmq:
+    hostname: dispatcher-queue
+    container_name: rabbitmq
+    image: rabbitmq:3.9.5-management
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=password123
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics","-q","ping" ]
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    restart: always
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq/mnesia
+    networks:
+      - dispatcher
+
+networks:
+  status:
+    name: cache
+  dispatcher:
+    name: dispatcher
+
+volumes:
+  rabbitmq_data:
+    driver: local
+  redis_data:
+    driver: local

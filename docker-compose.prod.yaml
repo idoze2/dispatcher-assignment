@@ -1,0 +1,42 @@
+services:
+  rabbitmq:
+    ports:
+      - "15672:15672"
+
+  redis:
+    ports: [ ]
+
+  api:
+    container_name: api
+    env_file:
+      - api/.docker/.docker.env
+    build:
+      context: api
+      dockerfile: .docker/Dockerfile
+    ports:
+      - "8000:80"
+    restart: always
+    command: uvicorn app.main:app --host 0.0.0.0 --port 80
+    depends_on:
+      - redis
+      - rabbitmq
+    networks:
+      - dispatcher
+      - status
+
+  worker:
+    env_file:
+      - api/.docker/.docker.env
+    build:
+      context: api
+      dockerfile: .docker/Dockerfile
+    restart: always
+    deploy:
+      replicas: 1
+    command: celery -A app.celery_worker worker -l info
+    depends_on:
+      - redis
+      - rabbitmq
+    networks:
+      - dispatcher
+      - status
