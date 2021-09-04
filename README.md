@@ -6,7 +6,8 @@ This projects demonstrates a simple event driven architecture using FastAPI, Rab
 
 - Docker
   - [docker-compose](https://docs.docker.com/compose/install/)
-  
+
+### Run Services
 1. Run command ```docker-compose -f docker-compose.yaml -f docker-compose.prod.yaml up``` to start up the RabbitMQ, Redis our application/worker instances.
 2. Navigate to [http://localhost:8000/docs](http://localhost:8000/docs) and execute test API calls. You can monitor the execution of the celery tasks in the console logs or navigate to the RabbitMQ monitoring app: [http://localhost:15672](http://localhost:15672) (username: admin, password: password123).
 3. Use the ```scale``` options to specify the amount of worker containers that are to be created. for example: ```docker-compose -f docker-compose.yaml -f docker-compose.prod.yaml up --scale worker=3``` to scale the application with more worker instances.
@@ -16,7 +17,7 @@ This projects demonstrates a simple event driven architecture using FastAPI, Rab
 
 - Python >= 3.7
   - [pip](https://pip.pypa.io/en/stable/installation/)
-- RabbitMQ instance 
+- RabbitMQ instance
   - ```docker-compose up rabbitmq```
 - Redis instance
   - ```docker-compose up redis```
