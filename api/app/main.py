@@ -3,17 +3,13 @@ from fastapi.responses import RedirectResponse
 from .routers import scan, status
 
 description = """
-This projects demonstrates a simple event driven architecture using FastAPI, RabbitMQ, Redis and Celery.
+This API scans urls for known threats in an asynchronous manner.
 
 ## Scan API
-Use the ```/scan``` api to 
+Use ```/scan``` to enqueue a URL scan task and receive a scan_id for reference.
 
-## Users
-
-You will be able to:
-
-* **Create users** (_not implemented_).
-* **Read users** (_not implemented_).
+## Status API
+Use ```/status/``` to retrieve the job status (accepted, running, etc.) of the scanning process.
 """
 
 app = FastAPI(title="Dispatcher Assignment",
